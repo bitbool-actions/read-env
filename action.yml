@@ -19,6 +19,9 @@ runs:
     - name: read branch env
       shell: bash
       run: |
+        ls -al 
+        echo github
+        find .github
         echo "Looking for .github/envs/${{github.ref_name}}..."
         if [ -f ".github/envs/${{github.ref_name}}" ]; then
           echo "Found."
