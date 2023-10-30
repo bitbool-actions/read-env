@@ -1,0 +1,28 @@
+name: "read-env"
+description: "read env"
+inputs:
+  USE_ENV_FILES:
+     required: false
+     default: "true"
+runs:
+  using: "composite"
+  steps:
+
+    - name: read default env
+      shell: bash
+      run: |
+        echo "Looking for .github/envs/default..."
+        (([ -f ".github/envs/default" ] && cat ".github/envs/default" ) || true)
+        (([ -f ".github/envs/default" ] && cat ".github/envs/default" ) || true) >> $GITHUB_ENV
+      if: ${{ inputs.USE_ENV_FILES == 'true' }}
+
+    - name: read branch env
+      shell: bash
+      run: |
+        echo "Looking for .github/envs/${{github.ref_name}}..."
+        if [ -f ".github/envs/${{github.ref_name}}" ]; then
+          echo "Found."
+          cat ".github/envs/${{github.ref_name}}"
+          cat ".github/envs/${{github.ref_name}}" >> $GITHUB_ENV
+        fi 
+      if: ${{ inputs.USE_ENV_FILES == 'true' }}
