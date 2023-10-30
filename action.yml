@@ -12,16 +12,16 @@ runs:
       shell: bash
       run: |
         echo "Looking for .github/envs/default..."
-        (([ -f ".github/envs/default" ] && cat ".github/envs/default" ) || true)
-        (([ -f ".github/envs/default" ] && cat ".github/envs/default" ) || true) >> $GITHUB_ENV
+        if [ -f ".github/envs/default" ]; then
+          echo "Found."
+          cat ".github/envs/default"
+          cat ".github/envs/default" >> $GITHUB_ENV
+        fi 
       if: ${{ inputs.USE_ENV_FILES == 'true' }}
 
     - name: read branch env
       shell: bash
       run: |
-        ls -al 
-        echo github
-        find .github
         echo "Looking for .github/envs/${{github.ref_name}}..."
         if [ -f ".github/envs/${{github.ref_name}}" ]; then
           echo "Found."
